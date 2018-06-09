@@ -1,5 +1,6 @@
 import { call, takeLatest, put, all } from 'redux-saga/effects';
 import request, { makeReqOptions } from 'utils/request';
+import { getProductDetails } from 'utils/helpers';
 import { receivedProductCompareInfo, failedReceiveingProductInfo } from './actions';
 import * as types from './constants';
 
@@ -10,6 +11,7 @@ function* getProductCompareInfo(action) {
       call(request, action.payload.requestUrl2, makeReqOptions()),
     ]);
     const data = { product1, product2 };
+    const info = getProductDetails(product1);
     yield put(receivedProductCompareInfo(data));
   } catch (e) {
     // console.log(e);
