@@ -13,6 +13,10 @@ export const failedReceiveingProductInfo = (payload) => ({
   payload,
 });
 
+export const resetProductsCompareInfo = () => ({
+  type: types.RESET_COMPARE_PRODUCTS,
+});
+
 export const flashMessage = (text, type) => ({
   type: types.DISPLAY_ALERT,
   payload: { text, type },
