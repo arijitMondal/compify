@@ -1,8 +1,10 @@
 {
-  "name": "react boilerplate",
-  "theme_color": "#b1624d",
+  "name": "Lazada Compare",
+  "short_name": "Lazada Compare",
+  "theme_color": "#OO3E54",
   "background_color": "#fafafa",
   "display": "standalone",
+  "description": "Lazada ProductCompare",
   "Scope": "/",
   "start_url": "/",
   "icons": [

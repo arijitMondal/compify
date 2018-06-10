@@ -12,3 +12,8 @@ export const failedReceiveingProductInfo = (payload) => ({
   type: types.FAILED_RECEIVEING_COMPARE_PRODUCTS,
   payload,
 });
+
+export const flashMessage = (text, type) => ({
+  type: types.DISPLAY_ALERT,
+  payload: { text, type },
+});

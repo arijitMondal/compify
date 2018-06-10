@@ -3,7 +3,9 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OfflinePlugin = require('offline-plugin');
-
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 module.exports = require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
   entry: [
@@ -20,9 +22,13 @@ module.exports = require('./webpack.base.babel')({
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      children: true,
-      minChunks: 2,
-      async: true,
+      minChunks: (m) => /node_modules/.test(m.context),
+    }),
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      paths: true,
+      shorthands: true,
+      currying: true,
     }),
 
     // Minify and optimize the index.html
@@ -42,6 +48,13 @@ module.exports = require('./webpack.base.babel')({
       },
       inject: true,
     }),
+
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      include: ['main', 'vendor'],
+    }),
+
+    new ExtractTextPlugin('vendor.css'),
 
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin

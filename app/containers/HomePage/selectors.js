@@ -1,6 +1,15 @@
 import { createSelector } from 'reselect';
 
-const myFeed = () => (state) => state.get('myFeed');
+const productCompare = () => (state) => state.get('home');
 
-export const getFeedLoadStatus = () =>
-  createSelector(myFeed(), (store) => store.get('loadStatus'));
+export const getProductComparisionLoadStatus = () =>
+  createSelector(productCompare(), (store) => store.get('loading'));
+
+export const getFirstProductInfo = () =>
+  createSelector(productCompare(), (store) => store.get('firstProductInfo'));
+
+export const getSecondProductInfo = () =>
+  createSelector(productCompare(), (store) => store.get('secondProductInfo'));
+
+export const getAlerts = () =>
+  createSelector(productCompare(), (store) => store.get('alerts'));

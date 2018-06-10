@@ -1,24 +1,25 @@
 import { call, takeLatest, put, all } from 'redux-saga/effects';
 import request, { makeReqOptions } from 'utils/request';
-import { receivedProductCompareInfo, failedReceiveingProductInfo } from './actions';
+import { getProductDetails } from 'utils/helpers';
+import { flashMessage, receivedProductCompareInfo, failedReceiveingProductInfo } from './actions';
 import * as types from './constants';
 
 function* getProductCompareInfo(action) {
   try {
     const [product1, product2] = yield all([
-      call(request, action.payload.requestUrl1, makeReqOptions()),
-      call(request, action.payload.requestUrl2, makeReqOptions()),
+      call(request, action.payload.firstProductUrl, makeReqOptions()),
+      call(request, action.payload.secondProductUrl, makeReqOptions()),
     ]);
-    const data = { product1, product2 };
+    const firstProductInfo = getProductDetails(product1);
+    const secondProductInfo = getProductDetails(product2);
+    const data = { firstProductInfo, secondProductInfo };
     yield put(receivedProductCompareInfo(data));
   } catch (e) {
-    // console.log(e);
-    yield put(failedReceiveingProductInfo(e.response.status));
+    yield put(failedReceiveingProductInfo(e));
+    yield put(flashMessage('Couldnot get product information', 'error'));
   }
 }
 
-export default function* myFeedSaga() {
-  const sagasWatcher = yield [takeLatest(types.REQUEST_COMPARE_PRODUCTS, getProductCompareInfo)];
-  // yield take(types.KILL_MY_FEED_POSTS_SAGA);
-  // yield sagasWatcher.map((task) => cancel(task));
+export default function* productCompareSaga() {
+  yield [takeLatest(types.REQUEST_COMPARE_PRODUCTS, getProductCompareInfo)];
 }
