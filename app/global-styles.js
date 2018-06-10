@@ -5,13 +5,14 @@ import robotoRegularWoff from 'fonts/Roboto-Regular.woff';
 import robotoRegularWoff2 from 'fonts/Roboto-Regular.woff2';
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
-   @font-face {
+  @font-face {
     font-family: 'Roboto';
     src: url(${robotoRegularWoff2}) format('woff2'),
          url(${robotoRegularWoff}) format('woff');
     font-weight: 400;
     font-style: normal;
-    font-display: swap; }
+    font-display: swap;
+  }
 
   html,
   body {
@@ -65,10 +66,9 @@ injectGlobal`
     padding: 0.8em 1.2em;
     overflow: hidden;
     list-style: none;
-    border: 1px solid #e0e0e0;
+    border: 1px solid ${colors.lightGrey};;
     margin: -3px 0 0 -3px;
-    background-color: white;
-    border-color: #e2e6e9;
+    background-color: ${colors.pureWhite};
     img {
       height: 150px;
       &.rating {
@@ -113,47 +113,79 @@ injectGlobal`
     }
   }
 
-    .btn {
-      display: inline-block;
-      padding: 6px 12px;
-      margin-bottom: 0;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 1.42857143;
-      text-align: center;
-      white-space: nowrap;
-      vertical-align: middle;
-      touch-action: manipulation;
-      cursor: pointer;
-      user-select: none;
-      background-image: none;
-      border: 1px solid transparent;
-      border-radius: 4px;
-      &.btn-submit {
-        color: #fff;
-        background-color: #f0ad4e;
-        border-color: #eea236;
-        &:disabled {
-          cursor: not-allowed;
-          background-color: #ffd08d;
-          color: #fff;
-          border-color: #f5c786;
-        }
+  .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    &:disabled {
+      cursor: not-allowed;
+    }
+    &.btnSubmit {
+      color: ${colors.pureWhite}
+      background-color: ${colors.orange};
+      border-color: ${colors.darkOrange};
+      &:disabled {
+        background-color: ${colors.lighterOrange};
+        border-color: ${colors.lighterOrange};
       }
     }
-    .form-input {
-      display: block;
-      width: 100%;
-      height: 34px;
-      padding: 6px 12px;
-      font-size: 14px;
-      line-height: 1.42857143;
-      color: #555;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    &.btnLg {
+      width: 50%;
     }
+  }
+
+  .form-input {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-color: ${colors.pureWhite};
+    background-image: none;
+    border: 1px solid ${colors.lightGrey};
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  }
+
+  .inlinedSvg {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+    line-height: 14px;
+    > div {
+      display: inline-block;
+    }
+    svg path {
+      fill: ${colors.grey};
+    }
+  }
+
+  .actionTextColor {
+    color: ${colors.orange};
+  }
+
+  .successTextColor {
+    color: ${colors.green};
+  }
+
+  .textLg {
+    font-size: 25px;
+  }
+
+  .noMargin {
+    margin: 0 !important;
+  }
+
 `;

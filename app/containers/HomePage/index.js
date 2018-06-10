@@ -12,12 +12,15 @@ import { createStructuredSelector } from 'reselect';
 import injectReducer from 'utils/injectReducer';
 import injectSaga from 'utils/injectSaga';
 import Growl from 'containers/Growl/Loadable';
-import starImg from 'fontSource/star.png';
-// import homeDeliveryImg from 'fontSource/truck.svg';
+import starImg from 'fontSource/star.svg';
+import homeDeliveryImg from 'fontSource/truck.svg';
+import moneyImg from 'fontSource/coin-dollar.svg';
+import liveUpImg from 'fontSource/undo2.svg';
+import ReactSVG from 'react-svg';
 import { Loader } from 'styles/Loader';
 import reducer from './reducer';
 import saga from './sagas';
-import { CompareForm } from './styles';
+import { TopBar, ProductName, BadgeBox, CompareForm, PageHeader, HighLightWrapper } from './styles';
 import * as CompareProductActions from './actions';
 import {
   getProductComparisionLoadStatus,
@@ -58,76 +61,121 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     }
   }
 
+  resetForm = () => {
+    this.setState({ secondProductUrl: '', firstProductUrl: '' });
+    this.props.actions.productCompareActions.resetProductsCompareInfo();
+  }
+
   render() {
     const { loadingProducts, firstProductInfo, secondProductInfo } = this.props;
     const { firstProductUrl, secondProductUrl } = this.state;
     return (
       <div>
         <Growl />
-        <h2 className="alignCenter">Lazada Product Compare</h2>
+        <TopBar><h1></h1></TopBar>
+        <PageHeader>Products Compare</PageHeader>
         <CompareForm onSubmit={this.handleSubmit}>
           <label htmlFor="firstProductLink">
-            <span>Please enter first product link </span>
-            <input id="firstProductLink" className="form-input" type="text" value={this.state.value} onChange={this.handleFirstItemValue} />
+            <input id="firstProductLink" placeholder="Please enter first product link" className="form-input" type="text" value={this.state.firstProductUrl} onChange={this.handleFirstItemValue} />
           </label>
           <label htmlFor="secondProductLink">
-            <span>Please enter second product link </span>
-            <input id="secondProductLink" className="form-input" type="text" value={this.state.value} onChange={this.handleSecondItemValue} />
+            <input id="secondProductLink" placeholder="Please enter second product link" className="form-input" type="text" value={this.state.secondProductUrl} onChange={this.handleSecondItemValue} />
           </label>
-          <input type="submit" className="btn btn-submit" disabled={!firstProductUrl.length || !secondProductUrl.length} value="Submit" />
+          <input type="submit" className="btn btnSubmit" disabled={!firstProductUrl.length || !secondProductUrl.length} value="Compare Now" />
+          <input onClick={this.resetForm} type="button" className="btn" value="Reset" disabled={!firstProductUrl.length || !secondProductUrl.length} />
         </CompareForm>
         { !loadingProducts && firstProductInfo.productName &&
         <div className="Rtable Rtable--3cols Rtable--collapse">
           <div className="Rtable-cell"></div>
           <div className="Rtable-cell">
             <img alt={`${firstProductInfo.productName}`} src={`https://${firstProductInfo.productImage}`} />
-            <p>{firstProductInfo.productName}</p>
-            <p>{firstProductInfo.productPrice}</p>
+            <ProductName>{firstProductInfo.productName}</ProductName>
+            <p className="actionTextColor textLg">{firstProductInfo.productPrice}</p>
             <p>{firstProductInfo.productInstallmentPlans}</p>
+            <input type="button" className="btn btnSubmit btnLg" value="Buy Now" />
           </div>
           <div className="Rtable-cell">
             <img alt={`${firstProductInfo.productName}`} src={`https://${secondProductInfo.productImage}`} />
-            <p>{secondProductInfo.productName}</p>
-            <p>{secondProductInfo.productPrice}</p>
+            <ProductName>{secondProductInfo.productName}</ProductName>
+            <p className="actionTextColor textLg">{secondProductInfo.productPrice}</p>
             <p>{secondProductInfo.productInstallmentPlans}</p>
+            <input type="button" className="btn btnSubmit btnLg" value="Buy Now" />
           </div>
           <div className="Rtable-cell"><h3>Ratings & Reviews</h3></div>
           <div className="Rtable-cell">
-            <span>{firstProductInfo.productRating}</span>
-            <img alt="product rating" className="rating" src={starImg} />
-            <span> from {firstProductInfo.productRatingCount}</span>
-            <p>{firstProductInfo.questionCountAboutProduct}</p>
+            <div>
+              <BadgeBox>
+                <span>{firstProductInfo.productRating} </span>
+                <div className="inlinedSvg noMargin"><ReactSVG path={starImg} style={{ height: '10px', width: '10px' }} /></div>
+              </BadgeBox>
+              <span> from {firstProductInfo.productRatingCount}</span>
+            </div>
+            {// eslint-disable-next-line jsx-a11y/href-no-hash
+              <a href="#">{firstProductInfo.questionCountAboutProduct}</a>
+            }
           </div>
           <div className="Rtable-cell">
-            <span>{secondProductInfo.productRating}</span>
-            <img alt="product rating" className="rating" src={starImg} />
-            <span> from {secondProductInfo.productRatingCount}</span>
-            <p>{secondProductInfo.questionCountAboutProduct}</p>
+            <div>
+              <BadgeBox>
+                <span>{secondProductInfo.productRating} </span>
+                <div className="inlinedSvg noMargin"><ReactSVG path={starImg} style={{ height: '10px', width: '10px' }} /></div>
+              </BadgeBox>
+              <span> from {secondProductInfo.productRatingCount}</span>
+            </div>
+            {// eslint-disable-next-line jsx-a11y/href-no-hash
+              <a href="#">{secondProductInfo.questionCountAboutProduct}</a>
+            }
           </div>
           <div className="Rtable-cell">
             <h3>Highlights</h3>
           </div>
           <div className="Rtable-cell">
-            <ul>
+            <HighLightWrapper>
               { firstProductInfo.productHighlight && firstProductInfo.productHighlight.map((item, index) => <li key={index}>{item}</li>) // eslint-disable-line
               }
-            </ul>
+            </HighLightWrapper>
           </div>
           <div className="Rtable-cell">
-            <ul>
+            <HighLightWrapper>
               { secondProductInfo.productHighlight && secondProductInfo.productHighlight.map((item, index) => <li key={index}>{item}</li>) // eslint-disable-line
               }
-            </ul>
+            </HighLightWrapper>
           </div>
           <div className="Rtable-cell"><h3>Delivery</h3></div>
-          <div className="Rtable-cell">{firstProductInfo.productName}</div>
-          <div className="Rtable-cell">{secondProductInfo.productName}</div>
-          <div className="Rtable-cell"><h3>Seller</h3></div>
           <div className="Rtable-cell">
-            <p>{`${firstProductInfo.productSellerName} (${firstProductInfo.productSellerRating})`}</p>
+            <div>
+              <div className="inlinedSvg noMargin"><ReactSVG path={liveUpImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span> {firstProductInfo.liveUpDeliveryInfo}</span>
+            </div>
+            <div>
+              <div className="inlinedSvg "><ReactSVG path={homeDeliveryImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span>Home Delivery from {firstProductInfo.homeDeliveryInfo} </span>
+            </div>
+            <div>
+              <div className="inlinedSvg"><ReactSVG path={moneyImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span>{firstProductInfo.cODDeliveryInfo}</span>
+            </div>
           </div>
           <div className="Rtable-cell">
-            <p>{`${firstProductInfo.productSellerName} (${firstProductInfo.productSellerRating})`}</p>
+            <div>
+              <div className="inlinedSvg noMargin"><ReactSVG path={liveUpImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span> {secondProductInfo.liveUpDeliveryInfo}</span>
+            </div>
+            <div>
+              <div className="inlinedSvg"><ReactSVG path={homeDeliveryImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span>Home Delivery from {secondProductInfo.homeDeliveryInfo} </span>
+            </div>
+            <div>
+              <div className="inlinedSvg"><ReactSVG path={moneyImg} style={{ height: '15px', width: '15px' }} /></div>
+              <span>{secondProductInfo.cODDeliveryInfo}</span>
+            </div>
+          </div>
+          <div className="Rtable-cell"><h3>Seller</h3></div>
+          <div className="Rtable-cell">
+            <p><span>{`${firstProductInfo.productSellerName}`}</span> (<span className="successTextColor">{`${firstProductInfo.productSellerRating}`} </span>)</p>
+          </div>
+          <div className="Rtable-cell">
+            <p><span>{`${secondProductInfo.productSellerName}`}</span> (<span className="successTextColor">{`${secondProductInfo.productSellerRating}`} </span>)</p>
           </div>
           <div className="Rtable-cell"><h3>Return Policy</h3></div>
           <div className="Rtable-cell">{firstProductInfo.productReturnInfo}</div>
