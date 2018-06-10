@@ -3,6 +3,7 @@ import {
   REQUEST_COMPARE_PRODUCTS,
   RECEIVED_COMPARE_PRODUCTS,
   FAILED_RECEIVEING_COMPARE_PRODUCTS,
+  DISPLAY_ALERT,
 } from './constants';
 
 const initialState = fromJS({
@@ -12,17 +13,18 @@ const initialState = fromJS({
 function feedPosts(state = initialState, action) {
   switch (action.type) {
     case REQUEST_COMPARE_PRODUCTS: {
-      return state;
+      return state.set('loading', true);
     }
     case RECEIVED_COMPARE_PRODUCTS: {
-      return state;
+      const { firstProductInfo, secondProductInfo } = action.payload;
+      return state.set('loading', false).set('firstProductInfo', firstProductInfo).set('secondProductInfo', secondProductInfo);
     }
     case FAILED_RECEIVEING_COMPARE_PRODUCTS: {
-      // return state.set('loadStatus', 1).set('pageStatus', action.payload);
-      return state;
+      return state.set('loading', false);
     }
-
-
+    case DISPLAY_ALERT: {
+      return state.set('alerts', action.payload);
+    }
     default:
       return state;
   }

@@ -1,37 +1,28 @@
 export const getProductDetails = (product) => {
-  const start = Date.now();
   const parser = new DOMParser();
   const parsedHTML = parser.parseFromString(product, 'text/html');
-  // const productName = getProductName(parsedHTML);
-  // const productImage = getProductImage(parsedHTML);
-  console.log(getProductName(parsedHTML));
-  console.log(getProductPrice(parsedHTML));
-  console.log(getProductSellerName(parsedHTML));
-  console.log(getProductSellerRating(parsedHTML));
-  console.log(getProductImage(parsedHTML));
-  console.log(getProductRating(parsedHTML));
-  console.log(getProductRatingCount(parsedHTML));
-  console.log(getProductInstallmentPlans(parsedHTML));
-  console.log(getHomeDeliveryInfo(parsedHTML));
-  console.log(getProductReturnInfo(parsedHTML));
-  console.log(getLiveUpDeliveryInfo(parsedHTML));
-  console.log(getProductWarrantyInfo(parsedHTML));
-  console.log(getCODDeliveryInfo(parsedHTML));
-  console.log(getQuestionCountAboutProduct(parsedHTML));
-  console.log(getProductHighlight(parsedHTML));
-  const end = Date.now();
-  console.log(end - start);
-  return product;
+  const productName = getProductName(parsedHTML);
+  const productImage = getProductImage(parsedHTML);
+  const productPrice = getProductPrice(parsedHTML);
+  const productSellerName = getProductSellerName(parsedHTML);
+  const productSellerRating = getProductSellerRating(parsedHTML);
+  const productHighlight = getProductHighlight(parsedHTML);
+  const productRating = getProductRating(parsedHTML);
+  const productRatingCount = getProductRatingCount(parsedHTML);
+  const questionCountAboutProduct = getQuestionCountAboutProduct(parsedHTML);
+  const productInstallmentPlans = getProductInstallmentPlans(parsedHTML);
+  const liveUpDeliveryInfo = getLiveUpDeliveryInfo(parsedHTML);
+  const homeDeliveryInfo = getHomeDeliveryInfo(parsedHTML);
+  const cODDeliveryInfo = getCODDeliveryInfo(parsedHTML);
+  const productReturnInfo = getProductReturnInfo(parsedHTML);
+  const productWarrantyInfo = getProductWarrantyInfo(parsedHTML);
+  const productDetails = { productName, productImage, productPrice, productSellerName, productSellerRating, productHighlight, productRating, productRatingCount, questionCountAboutProduct, productInstallmentPlans, liveUpDeliveryInfo, homeDeliveryInfo, cODDeliveryInfo, productReturnInfo, productWarrantyInfo };
+  return productDetails;
 };
 
 export const getProductName = (parsedHtml) => {
   const productName = parsedHtml.getElementById('module_product_title_1').childNodes[0].innerText;
   return productName;
-};
-
-export const getProductDiscount = (parsedHtml) => {
-  const productDiscount = parsedHtml.getElementById('module_product_title_1').querySelector('.pdp-product-price__discount').innerText;
-  return productDiscount;
 };
 
 export const getProductPrice = (parsedHtml) => {
